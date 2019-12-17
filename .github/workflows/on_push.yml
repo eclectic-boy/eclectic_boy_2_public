@@ -1,0 +1,19 @@
+name: On push to branch
+
+on:
+  push:
+    branches-ignore:
+      - master
+
+jobs:
+  run_tests:
+    name: Run tests
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Run tests inside Docker
+        run: |
+          echo Running tests inside Docker...
+          make docker_test

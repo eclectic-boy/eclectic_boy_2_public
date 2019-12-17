@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <meta name="description" content="It's just a part of me">
+        <meta
+            name="keywords"
+            content="Python,HTML,CSS,JavaScript,jQuery,computer science,code,full-stack,development,web,developer"
+        >
+        <meta name="author" content="Gianvito Petruzzelli">
+
+        <title>{% block title %}eclecticboy.xyz{% endblock %}</title>
+
+        <link rel="icon" href="{% static 'main/img/favicon.png' %}" type="image/png">
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" >
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Calligraffitti">
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Josefin+Sans&subset=latin,latin-ext">
+        <link
+            rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"
+        >
+
+        <link rel="stylesheet" href="{% static 'main/css/base.css' %}">
+        {% block css %}{% endblock %}
+
+        <!-- JS -->
+        <script
+            src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous">
+        </script>
+        <script
+            src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+            integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+            crossorigin="anonymous"
+        ></script>
+        <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
+        <script src="https://underscorejs.org/underscore-min.js"></script>
+
+        <script src="https://unpkg.com/prismic-dom"></script>
+
+        <script type="application/javascript">
+            const richTextAsHtml = PrismicDOM.RichText.asHtml;
+
+            const STATIC_ROOT = "{% static '' %}";
+
+            const PRISMIC_REPO = "{{ settings.PRISMIC.REPO }}";
+        </script>
+
+        <script src="{% static 'main/js/base.js' %}"></script>
+
+        {% block js %}{% endblock %}
+
+        {% block head %}{% endblock %}
+    </head>
+
+
+    <body>
+        {% block header %}
+        <nav id="main_navbar" class="navbar navbar-expand-md navbar-dark fixed-top">
+            <a class="navbar-brand" href="#"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav"></ul>
+            </div>
+        </nav>
+        {% endblock %}
+
+        <div class="body">
+            {% block body %}{% endblock %}
+        </div>
+
+        {% block footer %}
+        <div class="container" id="footer">
+            <span class="watermark"></span>
+            <br>•<br>
+            <a href="/cookie-policy" class="cookie_policy"></a>
+        </div>
+        {% endblock %}
+
+
+        <!-- Cookie consent https://www.websitepolicies.com/cookie-consent-banner-generator -->
+        <link rel="stylesheet" type="text/css" href="//wpcc.io/lib/1.0.2/cookieconsent.min.css"/>
+        <script src="//wpcc.io/lib/1.0.2/cookieconsent.min.js"></script>
+        <script>window.addEventListener("load", function(){window.wpcc.init({"colors":{"popup":{"background":"#491b1b","text":"#ffffff","border":"#e6b3b3"},"button":{"background":"#e6b3b3","text":"#000000"}},"corners":"small","content":{"href":"/cookie-policy"}})});</script>
+        <!-- End Cookie consent -->
+
+        <!-- Google Analytics-->
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-66680615-1', 'auto');
+          ga('send', 'pageview');
+        </script>
+        <!-- End Google Analytics-->
+
+        <!-- Bootstrap-->
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"
+        ></script>
+        <!-- End Bootstrap-->
+
+    </body>
+
+</html>

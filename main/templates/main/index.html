@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block body%}
+<link rel="stylesheet" href="{% static 'main/css/index.css' %}">
+
+<script src="{% static 'main/js/cursorSpy/js/cursorSpy.js' %}"></script>
+<script src="{% static 'main/js/index.js' %}"></script>
+
+<div data-spy="scroll" data-target="#main-navbar">
+
+    <div id="home_">&nbsp;</div>
+    <div class="section section-green container" id="home">
+        <div class="row">
+            <div class="col-12">
+                <div class="bunny_container" id="left_kid_bunny"></div>
+                <div class="bunny_container" id="daddy_bunny"></div>
+                <div class="bunny_container" id="right_kid_bunny"></div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+
+    <div id="me_">&nbsp;</div>
+    <div class="section section-green container" id="me"></div>
+
+    <div id="repos_">&nbsp;</div>
+    <div class="section section-green container" id="repos">
+        <div class="row">
+            <div class="col-12 col-md-6 projects_left_column"></div>
+            <div class="col-12 col-md-6 projects_right_column"></div>
+        </div>
+    </div>
+
+    <div id="contacts_">&nbsp;</div>
+    <div class="section section-green container" id="contacts"></div>
+
+</div>
+
+{% endblock %}

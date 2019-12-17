@@ -1,0 +1,84 @@
+name: On release published
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy_to_production_server:
+    name: Deploy to production server
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Start deployment to production server
+        run: echo Starting deployment to production server...
+
+      - name: Checkout new release
+        uses: appleboy/ssh-action@master
+        env:
+          SSH_PATH: ${{ secrets.SSH_PATH }}
+        with:
+          host: ${{ secrets.SSH_SERVER }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          envs: SSH_PATH,GITHUB_REF
+          script: |
+            cd $SSH_PATH
+            git checkout $GITHUB_REF
+
+      - name: Install requirements
+        uses: appleboy/ssh-action@master
+        env:
+          SSH_PATH: ${{ secrets.SSH_PATH }}
+        with:
+          host: ${{ secrets.SSH_SERVER }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          envs: SSH_PATH
+          script: |
+            cd $SSH_PATH
+            pip3 install -r requirements.txt
+
+      - name: Perform migrations
+        uses: appleboy/ssh-action@master
+        env:
+          SSH_PATH: ${{ secrets.SSH_PATH }}
+        with:
+          host: ${{ secrets.SSH_SERVER }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          envs: SSH_PATH
+          script: |
+            cd $SSH_PATH
+            ./python ./manage.py migrate --run-syncdb
+
+      - name: Collect static files
+        uses: appleboy/ssh-action@master
+        env:
+          SSH_PATH: ${{ secrets.SSH_PATH }}
+        with:
+          host: ${{ secrets.SSH_SERVER }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          envs: SSH_PATH
+          script: |
+            cd $SSH_PATH
+            ./python ./manage.py collectstatic --noinput
+
+      - name: Restart server
+        uses: appleboy/ssh-action@master
+        env:
+          SERVER_RESTART_COMMAND: ${{ secrets.SERVER_RESTART_COMMAND }}
+        with:
+          host: ${{ secrets.SSH_SERVER }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          envs: SERVER_RESTART_COMMAND
+          script: |
+            $SERVER_RESTART_COMMAND
+
+      - name: Deployment completed
+        run: echo Deployment completed

@@ -1,0 +1,29 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.4.0
+    hooks:
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+    -   id: check-yaml
+    -   id: check-added-large-files
+        args: ['--maxkb=1000']
+    -   id: flake8
+        exclude: >
+            (?x)^(
+                scripts/wait-for-it/.+
+            )$
+
+-   repo: https://github.com/pre-commit/mirrors-pylint
+    rev: v2.4.4  # Use the sha / tag you want to point at
+    hooks:
+    -   id: pylint
+        args: [
+            '--disable=import-error,missing-module-docstring,missing-class-docstring,missing-function-docstring,
+            too-few-public-methods'
+        ]
+        exclude: >
+            (?x)^(
+                scripts/wait-for-it/.+
+            )$
