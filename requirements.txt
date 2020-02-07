@@ -1,6 +1,9 @@
-Django==3.0
+Django==3.0.2
 psycopg2==2.8.4
 django-environ==0.4.5
+django-extensions==2.2.5
 ipython
 pre-commit
 pylint
+
+git+https://github.com/eclectic-boy/rhodonea_mapper.git@v1.0.2#egg=rhodonea-mapper

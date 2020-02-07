@@ -1,9 +1,8 @@
 name: On release published
 
 on:
-  push:
-    branches:
-      - master
+  release:
+    types: [published]
 
 jobs:
   deploy_to_production_server:
@@ -20,38 +19,45 @@ jobs:
         uses: appleboy/ssh-action@master
         env:
           SSH_PATH: ${{ secrets.SSH_PATH }}
+          VIRTUALENV: ${{ secrets.VIRTUALENV }}
         with:
           host: ${{ secrets.SSH_SERVER }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          envs: SSH_PATH,GITHUB_REF
+          envs: SSH_PATH,VIRTUALENV,GITHUB_REF
           script: |
+            source ~/.virtualenvs/$VIRTUALENV/bin/activate
             cd $SSH_PATH
+            git fetch --tags
             git checkout $GITHUB_REF
 
       - name: Install requirements
         uses: appleboy/ssh-action@master
         env:
           SSH_PATH: ${{ secrets.SSH_PATH }}
+          VIRTUALENV: ${{ secrets.VIRTUALENV }}
         with:
           host: ${{ secrets.SSH_SERVER }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          envs: SSH_PATH
+          envs: SSH_PATH,VIRTUALENV
           script: |
+            source ~/.virtualenvs/$VIRTUALENV/bin/activate
             cd $SSH_PATH
-            pip3 install -r requirements.txt
+            pip3 install --ignore-installed -r requirements.txt
 
       - name: Perform migrations
         uses: appleboy/ssh-action@master
         env:
           SSH_PATH: ${{ secrets.SSH_PATH }}
+          VIRTUALENV: ${{ secrets.VIRTUALENV }}
         with:
           host: ${{ secrets.SSH_SERVER }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          envs: SSH_PATH
+          envs: SSH_PATH,VIRTUALENV
           script: |
+            source ~/.virtualenvs/$VIRTUALENV/bin/activate
             cd $SSH_PATH
             ./python ./manage.py migrate --run-syncdb
 
@@ -59,25 +65,33 @@ jobs:
         uses: appleboy/ssh-action@master
         env:
           SSH_PATH: ${{ secrets.SSH_PATH }}
+          VIRTUALENV: ${{ secrets.VIRTUALENV }}
         with:
           host: ${{ secrets.SSH_SERVER }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          envs: SSH_PATH
+          envs: SSH_PATH,VIRTUALENV
           script: |
+            source ~/.virtualenvs/$VIRTUALENV/bin/activate
             cd $SSH_PATH
-            ./python ./manage.py collectstatic --noinput
+            python ./manage.py collectstatic --noinput
 
       - name: Restart server
         uses: appleboy/ssh-action@master
         env:
+          SSH_PATH: ${{ secrets.SSH_PATH }}
+          VIRTUALENV: ${{ secrets.VIRTUALENV }}
           SERVER_RESTART_COMMAND: ${{ secrets.SERVER_RESTART_COMMAND }}
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
         with:
           host: ${{ secrets.SSH_SERVER }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          envs: SERVER_RESTART_COMMAND
+          envs: SSH_PATH,VIRTUALENV,SERVER_RESTART_COMMAND,GOOGLE_API_KEY
           script: |
+            source ~/.virtualenvs/$VIRTUALENV/bin/activate
+            cd $SSH_PATH
+            export GOOGLE_API_KEY=$GOOGLE_API_KEY
             $SERVER_RESTART_COMMAND
 
       - name: Deployment completed

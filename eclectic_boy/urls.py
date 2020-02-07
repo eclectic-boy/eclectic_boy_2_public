@@ -19,5 +19,6 @@ from django.urls import path, include
 
 urlpatterns = [  # pylint: disable=invalid-name
     path('', include('main.urls')),
+    path('rhodonea-mapper/', include('rhodonea_mapper.urls')),
     path('admin/', admin.site.urls),
 ]

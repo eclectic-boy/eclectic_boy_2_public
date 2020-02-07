@@ -45,7 +45,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis',
+    'rest_framework',
+    'rest_framework_gis',
     'main',
+    'rhodonea_mapper',
 ]
 
 MIDDLEWARE = [
@@ -139,3 +143,21 @@ STATIC_ROOT = BASE_DIR + '/static/'
 PRISMIC = {
     'REPO': 'eclecticboy',
 }
+
+# Django Rest Framework
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': (
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+        'rest_framework_gis.filters.InBBoxFilter',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (),
+    'PAGINATE_BY': 10,
+    'COERCE_DECIMAL_TO_STRING': False,
+}
+
+
+# Rhodonea Mapper
+RHODONEA_MAPPER_BASE_TEMPLATE_PATH = 'base.html'
+
+GOOGLE_API_KEY = env('GOOGLE_API_KEY', default='')
