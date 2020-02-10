@@ -6,4 +6,4 @@ ipython
 pre-commit
 pylint
 
-git+https://github.com/eclectic-boy/rhodonea_mapper.git@v1.0.2#egg=rhodonea-mapper
+git+https://github.com/eclectic-boy/rhodonea_mapper.git@v1.1.1#egg=rhodonea-mapper
